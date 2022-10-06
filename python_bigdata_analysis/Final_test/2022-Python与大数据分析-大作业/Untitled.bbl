@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{chen2016xgboost}
+T.~Chen and C.~Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In {\em Proceedings of the 22nd acm sigkdd international conference
+  on knowledge discovery and data mining}, pages 785--794, 2016.
+
+\bibitem{nelder1972generalized}
+J.~A. Nelder and R.~W. Wedderburn.
+\newblock Generalized linear models.
+\newblock {\em Journal of the Royal Statistical Society: Series A (General)},
+  135(3):370--384, 1972.
+
+\bibitem{zheng2000summarizing}
+B.~Zheng and A.~Agresti.
+\newblock Summarizing the predictive power of a generalized linear model.
+\newblock {\em Statistics in medicine}, 19(13):1771--1781, 2000.
+
+\end{thebibliography}

@@ -1,0 +1,689 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
+\lstset{defaultdialect=[5.3]Lua}
+\lstset{defaultdialect=[x86masm]Assembler}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\leavevmode\vadjust pre{\hypertarget{3964f9c8}{}}%
+本节尝试使用在jupyter
+notebook使用zsh，顺便写一个zsh的食用指南，notebook写真的方便很多啊。
+
+\hypertarget{2f391477}{}
+\begin{lstlisting}[language=Python]
+import zsh_in_jupyter
+\end{lstlisting}
+
+\hypertarget{5198530e}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{426de12e}{}
+\hypertarget{introdution}{%
+\section{Introdution}\label{introdution}}
+
+因为及其好用，比如 具体而言 \textbackslash begin\{itemize\}
+\textbackslash item 许多功能在图形界面不提供，只有通过命令行来实现。
+\textbackslash item Finder 会隐藏许多你不太会需要的文件，而 Command line
+则可以访问所有文件。 \textbackslash item Command line 可以通过 SSH
+远程访问你的 Mac 或者 Linux。 \textbackslash item 普通用户可以通过
+\passthrough{\lstinline!sudo!} 命令获得 root 用户权限。
+\textbackslash item
+如果你开启手动输入用户名登陆模式，登陆时在用户名处输入
+\passthrough{\lstinline!>console!}
+可以直接进入命令行界面。随后你仍然需要登录到一个账户。
+\textbackslash end\{itemize\}
+
+\hypertarget{37695442}{}
+\begin{lstlisting}[language=Python]
+!echo ~
+\end{lstlisting}
+
+\begin{lstlisting}
+/Users/nymath
+\end{lstlisting}
+
+\hypertarget{a302ba1e}{}
+\begin{lstlisting}[language=Python]
+get_ipython().system('echo ~')
+\end{lstlisting}
+
+\begin{lstlisting}
+/Users/nymath
+\end{lstlisting}
+
+\hypertarget{a524a580}{}
+\begin{lstlisting}[language=Python]
+# 打开当前文件夹
+!temp=$(pwd);\
+open $temp
+\end{lstlisting}
+
+\hypertarget{4831e23d}{}
+\begin{lstlisting}[language=Python]
+def zsh(par='temp=$(pwd);open $temp'):
+    if type(par) == str:
+        return get_ipython().system(par)
+    else:
+        return 'type error'
+\end{lstlisting}
+
+\hypertarget{ca8dc0b8}{}
+\begin{lstlisting}[language=Python]
+func.system('temp=$(pwd);open $temp')
+\end{lstlisting}
+
+\hypertarget{f017b2d9}{}
+\begin{lstlisting}[language=Python]
+get_ipython().system('temp=$(pwd);open $temp')
+\end{lstlisting}
+
+\hypertarget{ce7fec45}{}
+\begin{lstlisting}[language=Python]
+from zsh_in_jupyter import 
+\end{lstlisting}
+
+\hypertarget{d9c1184a}{}
+\hypertarget{terminlogy}{%
+\subsection{Terminlogy}\label{terminlogy}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Command line}: A command-line interface is a way of giving
+  instructions to a computer and getting results back
+\item
+  \textbf{Shell}: A shell is a program that creates a user interface of
+  one kind or another enabling you to interact with a computer
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{csh}: the C shell, named for similarities to the C
+    programming language
+  \item
+    \textbf{zsh}: the Z shell, an advanced shell named after Yale
+    professor Zhong Shao that incorporates features from tcsh, ksh, and
+    bash, plus other capabilities
+  \item
+    \textbf{dash}: the Debian Almquist shell, a lightweight shell that's
+    been around for more than two decades, but was not included with
+    macOS until Catalina
+  \end{itemize}
+\item
+  \textbf{Terminal}: the devices people used to interact with computers
+  back in the days of monolithic mainframes.
+\end{itemize}
+
+\hypertarget{1f3f48b1}{}
+
+\hypertarget{8cde7b83}{}
+\hypertarget{commands-aruguments-and-flags}{%
+\subsection{commands, aruguments and
+flags}\label{commands-aruguments-and-flags}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Command}: Commands are straightforward; they're the verbs of
+  the command line (eventhough they may look nothing like English
+  verbs).
+\end{itemize}
+
+\begin{lstlisting}
+pwd
+date
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Arguments}: Along with commands (verbs), we have arguments,
+  which you can think ofas nouns
+\end{itemize}
+
+比如你要处理一个文件，需要指定这个文件的名字
+
+\begin{lstlisting}
+nano file1
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Flags}: Besides verbs and nouns, we have adverbs! In English,
+  I could say, ``Eatcereal quickly!'' or ``Watch TV quietly.''
+\end{itemize}
+
+ls展示文件，ls a展示所有文件
+
+\hypertarget{4d64b54c}{}
+\begin{lstlisting}[language=Python]
+!pwd; \
+date
+\end{lstlisting}
+
+\begin{lstlisting}
+/Users/nymath/Desktop/python/python_quant/Statistical_learning
+Fri Sep 30 00:41:43 CST 2022
+\end{lstlisting}
+
+\hypertarget{ecc4840a}{}
+\begin{lstlisting}[language=Python]
+!ls -l -a
+\end{lstlisting}
+
+\begin{lstlisting}
+total 88
+drwxrwxr-x@  7 nymath  staff    224 Sep 30 00:49 .
+drwxr-xr-x@ 16 nymath  staff    512 Sep 30 00:35 ..
+drwxr-xr-x   4 nymath  staff    128 Sep 29 21:14 .ipynb_checkpoints
+-rw-r--r--   1 nymath  staff  22692 Sep 30 00:22 Structures of Data.ipynb
+-rw-r--r--@  1 nymath  staff    158 Sep 30 00:22 fib.py
+-rw-------   1 nymath  staff    170 Sep 30 00:12 fib.py.save
+-rw-r--r--   1 nymath  staff  11053 Sep 30 00:49 zsh_basics.ipynb
+\end{lstlisting}
+
+\hypertarget{0e93f1a0}{}
+\begin{lstlisting}[language=Python]
+!ls -a; #
+\end{lstlisting}
+
+\begin{lstlisting}
+.                        Structures of Data.ipynb zsh_basics.ipynb
+..                       fib.py
+.ipynb_checkpoints       fib.py.save
+\end{lstlisting}
+
+\hypertarget{2b2a76af}{}
+\begin{lstlisting}[language=Python]
+!ls -a f* # show you only the names of files beginning with the letter f
+\end{lstlisting}
+
+\begin{lstlisting}
+fib.py      fib.py.save
+\end{lstlisting}
+
+\hypertarget{84684b9b}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{af360aad}{}
+\hypertarget{examples}{%
+\section{Examples}\label{examples}}
+
+\hypertarget{9de924ca}{}
+\hypertarget{open}{%
+\subsection{open}\label{open}}
+
+open
+命令用于打开一个文件夹或者具体的文件，如果指定的是applications中的.app文件，则可以直接打开。
+
+\hypertarget{174159de}{}
+\begin{lstlisting}[language=Python]
+!open /Applications/Notability.app 
+\end{lstlisting}
+
+\hypertarget{025763cf}{}
+\begin{lstlisting}[language=Python]
+!open /Applications/Safari.app
+\end{lstlisting}
+
+\hypertarget{81284268}{}
+\begin{lstlisting}[language=Python]
+!open /Applications/WeChat.app
+\end{lstlisting}
+
+\hypertarget{cc31e69f}{}
+\begin{lstlisting}[language=Python]
+!temp=$(pwd);\
+open $temp
+\end{lstlisting}
+
+\hypertarget{144151c5}{}
+\hypertarget{find--which}{%
+\subsection{find \& which}\label{find--which}}
+
+We can type the command "find" to find the files whose name contains the
+name given by input. To be specific, if we want to find site-packages in
+/opt/, we can
+
+\hypertarget{e45b3c74}{}
+\begin{lstlisting}[language=Python]
+!find /opt/anaconda3/lib/python3.9 -name "*site-packages*"
+\end{lstlisting}
+
+\begin{lstlisting}
+/opt/anaconda3/lib/python3.9/site-packages
+\end{lstlisting}
+
+\hypertarget{8350374f}{}
+\begin{lstlisting}[language=Python]
+!find /opt/anaconda3 -name "nbconvert"
+\end{lstlisting}
+
+\begin{lstlisting}
+/opt/anaconda3/pkgs/jupyter_server-1.13.5-pyhd3eb1b0_0/site-packages/jupyter_server/tests/nbconvert
+/opt/anaconda3/pkgs/jupyter_server-1.13.5-pyhd3eb1b0_0/site-packages/jupyter_server/tests/services/nbconvert
+/opt/anaconda3/pkgs/jupyter_server-1.13.5-pyhd3eb1b0_0/site-packages/jupyter_server/nbconvert
+/opt/anaconda3/pkgs/jupyter_server-1.13.5-pyhd3eb1b0_0/site-packages/jupyter_server/services/nbconvert
+/opt/anaconda3/pkgs/notebook-6.4.8-py39hecd8cb5_0/lib/python3.9/site-packages/notebook/nbconvert
+/opt/anaconda3/pkgs/notebook-6.4.8-py39hecd8cb5_0/lib/python3.9/site-packages/notebook/services/nbconvert
+/opt/anaconda3/pkgs/nbconvert-6.4.4-py39hecd8cb5_0/info/test/nbconvert
+/opt/anaconda3/pkgs/nbconvert-6.4.4-py39hecd8cb5_0/lib/python3.9/site-packages/nbconvert
+/opt/anaconda3/pkgs/nbconvert-6.4.4-py39hecd8cb5_0/share/jupyter/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/jupyter_server/tests/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/jupyter_server/tests/services/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/jupyter_server/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/jupyter_server/services/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/notebook/nbconvert
+/opt/anaconda3/lib/python3.9/site-packages/notebook/services/nbconvert
+/opt/anaconda3/share/jupyter/nbconvert
+\end{lstlisting}
+
+\hypertarget{296a8c95}{}
+\begin{lstlisting}[language=Python]
+!find /Users/ -name "pandoc"
+\end{lstlisting}
+
+\begin{lstlisting}
+/Users//nymath/Library/TeXShop/Engines/Inactive/pandoc
+\end{lstlisting}
+
+\hypertarget{87591abe}{}
+\begin{lstlisting}[language=Python]
+!which jupyter
+\end{lstlisting}
+
+\begin{lstlisting}
+/opt/anaconda3/bin/jupyter
+\end{lstlisting}
+
+\hypertarget{291f956f}{}
+\begin{lstlisting}[language=Python]
+!which python # python解释器所在位置，的确是vscode中用到的那个。
+\end{lstlisting}
+
+\begin{lstlisting}
+/opt/anaconda3/bin/python
+\end{lstlisting}
+
+\hypertarget{ffb615b4}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{74eb307f}{}
+\hypertarget{pandoc}{%
+\subsection{Pandoc}\label{pandoc}}
+
+\hypertarget{db8aa717}{}
+\begin{lstlisting}[language=Python]
+# 获取pandoc的安装路径
+!find /Users -name "pandoc"
+\end{lstlisting}
+
+\begin{lstlisting}
+/Users/nymath/Library/TeXShop/Engines/Inactive/pandoc
+\end{lstlisting}
+
+\hypertarget{9e039552}{}
+\begin{lstlisting}[language=Python]
+!open /Users/nymath/Library/TeXShop/Engines/Inactive/pandoc
+\end{lstlisting}
+
+\hypertarget{1fe0e645}{}
+\begin{lstlisting}[language=Python]
+# pandoc这个解释器?或者说函数？命令？保存的位置
+!which pandoc
+\end{lstlisting}
+
+\begin{lstlisting}
+/usr/local/bin/pandoc
+\end{lstlisting}
+
+\leavevmode\vadjust pre{\hypertarget{2208d79d}{}}%
+开始pandoc的应用介绍了
+
+\hypertarget{de037974}{}
+\begin{lstlisting}[language=Python]
+!pandoc --version
+\end{lstlisting}
+
+\begin{lstlisting}
+pandoc 2.19.2
+Compiled with pandoc-types 1.22.2.1, texmath 0.12.5.2, skylighting 0.13,
+citeproc 0.8.0.1, ipynb 0.2, hslua 2.2.1
+Scripting engine: Lua 5.4
+User data directory: /Users/nymath/.local/share/pandoc
+Copyright (C) 2006-2022 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
+\end{lstlisting}
+
+\hypertarget{6eb2a15a}{}
+\begin{lstlisting}[language=Python]
+!mkdir pandoc-test
+\end{lstlisting}
+
+\hypertarget{e3721cb3}{}
+\begin{lstlisting}[language=Python]
+!cd pandoc-test;\
+pwd;\
+\end{lstlisting}
+
+\begin{lstlisting}
+/Users/nymath/Desktop/python/python_quant/Statistical_learning/pandoc-test
+\end{lstlisting}
+
+\leavevmode\vadjust pre{\hypertarget{eea4fb86}{}}%
+相关命令解读
+
+\begin{lstlisting}
+pandoc test1.md -f markdown -t html -s -o test1.html
+\end{lstlisting}
+
+\emph{test1.md} tells pandoc which file to convert.\\
+\emph{-f} markdown -t html: from md to html.\\
+\emph{-s} says to create a ``standalone'' file\\
+\emph{-o} test1.html says to put the output in the file test1.html.
+
+\hypertarget{e9f2141a}{}
+\begin{lstlisting}
+pandoc -f html -t markdown hello.html
+\end{lstlisting}
+
+将hello.html转化为hello.md
+
+\hypertarget{e9d92533}{}
+\begin{lstlisting}[language=Python]
+!pandoc zsh_basics.ipynb -f ipynb -t latex -s -o zsh_basics.tex
+\end{lstlisting}
+
+\hypertarget{9438b4d2}{}
+\begin{lstlisting}[language=Python]
+zsh_in_jupyter.opendir()
+\end{lstlisting}
+
+\hypertarget{d987b502}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{4e375e7c}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{e4783d59}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{dddb2f3c}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{42c916b6}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{506a98c7}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{54253909}{}
+\hypertarget{nbconvert}{%
+\subsection{nbconvert}\label{nbconvert}}
+
+\leavevmode\vadjust pre{\hypertarget{6228238f}{}}%
+\href{https://nbconvert.readthedocs.io/en/latest/usage.html?highlight=pdf}{指南}\\
+当然pandoc也非常重要，可以看看\\
+\href{https://pandoc.org/}{Pandoc}
+
+\hypertarget{d472e0de}{}
+\hypertarget{html}{%
+\subsubsection{HTML}\label{html}}
+
+\hypertarget{840690bf}{}
+\begin{lstlisting}[language=Python]
+# HTML
+!jupyter nbconvert --to html zsh_basics.ipynb
+\end{lstlisting}
+
+\begin{lstlisting}
+[NbConvertApp] Converting notebook zsh_basics.ipynb to html
+[NbConvertApp] Writing 595565 bytes to zsh_basics.html
+\end{lstlisting}
+
+\hypertarget{87d51d83}{}
+\hypertarget{pdf}{%
+\subsubsection{PDF}\label{pdf}}
+
+PDF转化为pdf倒是挺费功夫的，不信的话直接转化看看，应该会报错，比如不支持中文，因此我们需要去弄一个template\\
+这个文件所在路径为/opt/anaconda3/share/jupyter/nbconvert/templates/latex
+
+\hypertarget{8c8f166b}{}
+\begin{lstlisting}[language=Python]
+!open /opt/anaconda3/share/jupyter/nbconvert/templates/latex 
+\end{lstlisting}
+
+\hypertarget{06137370}{}
+\begin{lstlisting}[language=Python]
+!jupyter nbconvert --to pdf zsh_basics.ipynb
+\end{lstlisting}
+
+\begin{lstlisting}
+[NbConvertApp] Converting notebook zsh_basics.ipynb to pdf
+[NbConvertApp] Writing 48048 bytes to zsh_basics.pdf
+\end{lstlisting}
+
+\hypertarget{62e24bad}{}
+\begin{lstlisting}[language=Python]
+!jupyter nbconvert --to pdf --template custom_template.tplx zsh_basics.ipynb
+\end{lstlisting}
+
+\hypertarget{4fb50372}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{d9b2b500}{}
+\hypertarget{python}{%
+\subsubsection{Python}\label{python}}
+
+\hypertarget{56272e70}{}
+\begin{lstlisting}[language=Python]
+!jupyter nbconvert --to python zsh_basics.ipynb
+\end{lstlisting}
+
+\begin{lstlisting}
+[NbConvertApp] Converting notebook zsh_basics.ipynb to python
+[NbConvertApp] Writing 4870 bytes to zsh_basics.py
+\end{lstlisting}
+
+\hypertarget{09bc2ee6}{}
+\begin{lstlisting}[language=Python]
+zsh()
+\end{lstlisting}
+
+\hypertarget{bad748bc}{}
+\hypertarget{latex}{%
+\subsubsection{Latex}\label{latex}}
+
+\hypertarget{b9528858}{}
+\begin{lstlisting}[language=Python]
+!jupyter nbconvert --to latex zsh_basics.ipynb
+\end{lstlisting}
+
+\begin{lstlisting}
+[NbConvertApp] Converting notebook zsh_basics.ipynb to latex
+[NbConvertApp] Writing 31753 bytes to zsh_basics.tex
+\end{lstlisting}
+
+\leavevmode\vadjust pre{\hypertarget{35a6ca5c}{}}%
+修改 documentclass{[}11pt{]}\{article\}\\
+为\\
+documentclass\{article\}\\
+usepackage\{ctex\}
+
+\hypertarget{1c7d164c}{}
+\begin{lstlisting}[language=Python]
+import zsh_in_jupyter
+\end{lstlisting}
+
+\hypertarget{6567a6f4}{}
+\begin{lstlisting}[language=Python]
+# 查看模组的说明
+print(zsh_in_jupyter.__doc__)
+\end{lstlisting}
+
+\begin{lstlisting}
+
+用于调用xxx
+
+\end{lstlisting}
+
+\hypertarget{8400b0b0}{}
+\begin{lstlisting}[language=Python]
+zsh_in_jupyter.opendir()
+\end{lstlisting}
+
+\hypertarget{26e90691}{}
+\begin{lstlisting}[language=Python]
+!open 
+\end{lstlisting}
+
+\hypertarget{2c6881f1}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{5de6e2f3}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{4ce8b5a7}{}
+\hypertarget{work-with-files-and-directories}{%
+\section{Work with Files and
+Directories}\label{work-with-files-and-directories}}
+
+似乎用的不太多，但还是写一点
+
+\hypertarget{fee21310}{}
+\hypertarget{create-a-file}{%
+\subsection{Create a File}\label{create-a-file}}
+
+Command \textbf{touch} is used for creating a file. (md
+macos简直了，右键创建文件夹都得付费)
+
+\hypertarget{fe2faaec}{}
+\begin{lstlisting}[language=Python]
+!touch test.sh
+\end{lstlisting}
+
+\hypertarget{22504561}{}
+\begin{lstlisting}[language=Python]
+zsh_in_jupyter.opendir()
+\end{lstlisting}
+
+\hypertarget{989345a2}{}
+\hypertarget{create-a-directory}{%
+\subsection{Create a Directory}\label{create-a-directory}}
+
+\hypertarget{2cf3ca8f}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{bc0b18fa}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{bc02dd51}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{d7e05175}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{4665e0f1}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{c414eefd}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{a7292b00}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{6f626e67}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{71771c75}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{87afa687}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{50f27d9c}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+\hypertarget{800ab4ea}{}
+\begin{lstlisting}[language=Python]
+\end{lstlisting}
+
+
+\end{document}

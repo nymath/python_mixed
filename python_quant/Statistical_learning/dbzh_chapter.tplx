@@ -1,0 +1,275 @@
+((= 
+===========================================================================================
+Name : dbzh_chapter
+Author: D. P Tweed
+Date : Feb, 2017
+------------------------------
+
+# Overview
+------------------------------
+This template is based on multiple original templates found in ~/anaconda/lib/python2.7/site-packages/nbconvert/templates/latex, namely
+* base.tplx
+* article.tplx
+* style_ipython.tplx
+
+# List of options and arguements:
+-------------------------------
+
+## To be applied in the notebook metadata
+
+
+* Document metadata to change title, author, date and affiliation
+
+"latex_metadata": {
+   "affiliation": "[Insert affiliation here]",
+   "title": "[Insert title here]",
+   "subtitle": "[Insert title here]",
+   "author": "[Insert name here]",
+   "abstract":"[Inset abstract here]",
+   "keywords":"[Inset keywords here]",
+}
+
+
+## To be applied in the cell metadata
+
+* hide Markdown cell
+"hide":true
+
+* add filler text (markdown cell)
+"loremipsum":"[one number or two numbers seperated by -]" 
+
+* show input output code cells
+"show":true
+
+* options for figure and table ('text/latex')
+"width":"[either user defined maximum length or specified in cm, in...]"
+"height":"[either user defined maximum height or specified in cm, in...]"
+"caption":"[Insert caption here]",
+"label":"[unique]"
+
+===========================================================================================
+=))
+
+
+((*- extends 'display_priority.tplx' -*))
+
+((* block body *))
+    ((* block predoc *))
+    ((* block maketitle *))
+((( add_chapter() )))
+    ((* endblock maketitle *))
+    ((* block abstract *))
+((( make_abstract() )))     
+    ((* endblock abstract *))
+    ((* endblock predoc *))
+
+((( super() )))
+
+    ((* block postdoc *))
+    ((* endblock postdoc *))
+((* endblock body *))
+
+%===============================================================================
+% SUPPORT BLOCKS
+%===============================================================================
+
+% Displaying simple data text
+((* block data_text *))
+\begin{Verbatim}
+((( output.data['text/plain'] )))
+\end{Verbatim}
+((* endblock data_text *))
+
+% Display python error text as-is
+((* block error *))
+\begin{stream}
+((( super() )))
+\end{stream}
+((* endblock error *))
+
+((* block traceback_line *))
+((( line | indent | strip_ansi | escape_latex )))
+((* endblock traceback_line *))
+
+% Display stream ouput with coloring
+((* block stream *))
+\begin{stream}
+((( output.text | escape_latex | ansi2latex )))
+\end{stream}
+((* endblock stream *))
+
+% Display latex
+((* block data_latex -*))
+((( output.data['text/latex'] | citation2latex | strip_files_prefix | markdown2latex )))
+((* endblock data_latex *))
+
+% Display markdown
+((* block data_markdown -*))
+((( output.data['text/markdown'] | citation2latex | strip_files_prefix | markdown2latex )))
+((* endblock data_markdown *))
+
+% Default mechanism for rendering figures
+((*- block data_png -*))
+((( draw_figure(output.metadata.filenames['image/png'],cell) )))
+((*- endblock -*))
+((*- block data_jpg -*))
+((( draw_figure(output.metadata.filenames['image/jpeg'],cell) )))
+((*- endblock -*))
+((*- block data_svg -*))
+((( draw_figure(output.metadata.filenames['image/svg+xml'],cell) )))
+((*- endblock -*))
+((*- block data_pdf -*))
+((( draw_figure(output.metadata.filenames['application/pdf'],cell) )))
+((*- endblock -*))
+
+% Default code input by default dispalys nothing
+((* block input scoped *))
+((* endblock input *))
+
+% Default code output: redirect execute_result to display data priority.
+((* block execute_result scoped *))
+((*- for type in output.data | filter_data_type -*))
+    ((*- if type in ['text/plain']*))
+    	 ((( add_prompt(output.data['text/plain'],cell) )))
+    ((*- elif type in ['text/latex']*))
+    	 ((( add_table(output.data['text/latex'],cell) )))
+    ((*- endif -*))
+((*- endfor -*))
+((* endblock execute_result *))
+
+% Render markdown
+((* block markdowncell scoped *))
+((( add_markdown(cell) )))
+((* endblock markdowncell *))
+
+% Don't display unknown types
+((* block unknowncell scoped *))
+((* endblock unknowncell *))
+
+%===============================================================================
+% SUPPORT MACROS
+%===============================================================================
+
+% Add abstract
+((* macro make_abstract() *))
+((*- if nb.metadata["latex_metadata"]: -*))
+((*- if nb.metadata["latex_metadata"]["abstract"]: -*))
+\begin{center}
+\parbox{\abstractwidth}{\it
+(((nb.metadata["latex_metadata"]["abstract"])))
+}
+\end{center}
+\par\vspace{\abstractsep}
+((*- endif -*))
+%\end{@twocolumnfalse}]
+((*-endif-*))
+((*- endmacro *))
+
+% Draw a figure using the graphicx package.
+((* macro draw_figure(filename,cell) -*))
+((* set filename = filename | posix_path *))
+((*- block figure scoped -*))
+((= set figure height =))
+    ((*- if cell.metadata.height -*))
+    ((* set figheight = cell.metadata.height *))
+    ((*- else -*))
+    ((* set figheight = '\\textheight' *))
+    ((*- endif -*))
+((= set figure width =))
+     ((*- if cell.metadata.width -*))
+     ((* set figwidth = cell.metadata.width *))
+     ((*- else -*))
+     ((* set figwidth = '\\textwidth' *))
+     ((*- endif -*))
+\begin{figure}
+((= insert rescaled image =))
+\centering
+\adjustimage{max size={(((figwidth)))}{(((figheight)))}}{((( filename )))}
+((= insert caption and label =))
+((( add_caption(cell) )))
+\end{figure}
+((*- endblock figure -*))
+((*- endmacro *))
+
+% Add a table
+((* macro add_table(content,cell) -*))
+((= set table height =))
+    ((*- if cell.metadata.height -*))
+    ((* set height = cell.metadata.height *))
+    ((*- else -*))
+    ((* set height = '\\textheight' *))
+    ((*- endif -*))
+((= set table width  =))
+     ((*- if cell.metadata.width -*))
+     ((* set width = cell.metadata.width *))
+     ((*- else -*))
+     ((* set width = '\\textwidth' *))
+     ((*- endif -*))
+\begin{table}
+((= insert rescaled table =))
+\centering
+\adjustbox{max size={(((width)))}{(((height)))}}{(((content)))}
+((= insert caption and label =))
+((( add_caption(cell) )))
+\end{table}
+((*- endmacro *))
+
+% Renders both input and output prompt in one block if ["show":true]
+((* macro add_prompt(text,cell) -*))
+\begin{coding}
+((( cell.source |highlight_code(strip_verbatim=True)|add_prompts(first=">>> ",cont="... ") )))
+((( text )))
+\end{coding}
+((*- endmacro *))
+
+((* macro add_caption(cell) -*))
+((*- if cell.metadata.caption-*))
+\caption{((( cell.metadata.caption)))}
+((*- endif -*))
+((*- if cell.metadata.label -*))
+\customlabel{((( cell.metadata.label )))}{toto}
+((*- endif -*))
+((*- endmacro *))
+
+
+% Add markdown content unless ["hide":true] is used
+((* macro add_markdown(cell) -*))
+    ((*- if cell.metadata.hide: -*))
+    ((* else -*))
+    ((( cell.source | citation2latex | strip_files_prefix | markdown2latex )))
+   ((*- if cell.metadata.loremipsum: -*))
+\par
+\lipsum[(((cell.metadata.loremipsum)))]
+    ((*- endif -*))
+    ((*- endif -*))
+((*- endmacro *))
+
+((* macro add_chapter() *))
+((*- if nb.metadata["latex_metadata"]: -*))
+    ((*- if nb.metadata["latex_metadata"]["title"]: -*))
+     	  ((* set title = nb.metadata["latex_metadata"]["title"] *))
+     ((*- else -*))
+     	  ((* set title = '[Insert Title]' *))
+     ((*- endif -*))
+     ((*- if nb.metadata["latex_metadata"]["subtitle"]: -*))
+     	  ((*- set subtitle = "\\\ "~ (nb.metadata["latex_metadata"]["subtitle"]) -*))
+     ((*- else -*)) 
+     	  ((* set subtitle = "" *))
+     ((*- endif -*))
+ ((*- else -*))
+     ((* set title = ( resources.metadata.name | ascii_only | escape_latex ) *))
+     ((* set subtitle = "" *))
+((*- endif -*))
+\chapter[(((title)))]{(((title)))(((subtitle)))}
+((*- if nb.metadata["latex_metadata"]: -*))
+     ((*- if nb.metadata["latex_metadata"]["epigraph"]: -*))
+     	  ((* set epigraph = nb.metadata["latex_metadata"]["epigraph"] *))
+	  ((*- if nb.metadata["latex_metadata"]["author"]: -*))
+     	       ((* set author = nb.metadata["latex_metadata"]["author"] *))
+    	  ((*- else -*))
+     	       (* set author = "" *))
+     	  ((*- endif *))
+    	  \epigraph{(((epigraph)))}{(((author)))}
+     ((*- endif *))
+((*- endif *))
+((* endmacro *))
